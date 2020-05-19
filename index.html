@@ -36,24 +36,6 @@
 
         <script>
         /* **** Leaflet **** */
-		        L.GridLayer.GridDebug = L.GridLayer.extend({
-				createTile: function (coords) {
-							const tile = document.createElement('div');
-							tile.style.outline = '1px solid green';
-							tile.style.fontWeight = 'bold';
-							tile.style.fontSize = '14pt';
-							tile.innerHTML = [coords.z, coords.x, (2 ** coords.z - coords.y)-1].join('/');
-								return tile;
-				},
-		});
-
-		L.gridLayer.gridDebug = function (opts) {
-			return new L.GridLayer.GridDebug(opts);
-		};
-
-        var grid = L.gridLayer.gridDebug();
-        
-        /* **** Leaflet **** */
         L.GridLayer.GridDebug = L.GridLayer.extend({
 				createTile: function (coords) {
 							const tile = document.createElement('div');
@@ -86,7 +68,7 @@
         var lyr = L.tileLayer('./{z}/{x}/{y}.png', {
 		tms: true, 
 		opacity: 1.0, 
-		attribution: "LiDAR DTM &copy; Environment Agency and database right 2020",
+		attribution: "LIDAR DTM 2m Open Government Licence © Environment Agency and database rights 2020",
 		minZoom: 10,
 		maxNativeZoom: 15,
 		bounds: L.latLngBounds([[49.859235, -6.421509],[51.618017, -1.570000]])
@@ -100,6 +82,14 @@
 		attribution: "EU-DEM &copy; European Environment Agency (EEA) under the framework of the <a href = 'https://land.copernicus.eu/imagery-in-situ/eu-dem' target = '_blank'>Copernicus</a> programme",
 		bounds: L.latLngBounds([[49.859235, -10.722656],[60.930432, 1.845703]])
 	});
+        var lyr2 = L.tileLayer('https://geoffrowland.github.io/Hillshade-5m/{z}/{x}/{y}.png', {
+		tms: true, 
+		opacity: 1.0,
+		minZoom: 19,
+		maxNativeZoom: 15, 
+		attribution: "OS Terrain 5 © Crown copyright and database rights 2020 Ordnance Survey (100025252)",
+		bounds: L.latLngBounds([[49.859235, -10.722656],[60.930432, 5.625000]])
+	});
 
         // Map
         var map = L.map('map', {
@@ -112,7 +102,7 @@
         });
 
         var basemaps = {"OpenStreetMap": osm, "Grey background": grey}
-        var overlaymaps = {"EU-DEM 25m" : lyr1, "DTM 2m": lyr, "Tile grid": grid}
+        var overlaymaps = {"Hillshade 25m" : lyr1, "Hillshade 5m" : lyr2, "Hillshade 2m": lyr, "Tile grid": grid}
 
         // Add base layers
         L.control.layers(basemaps, overlaymaps, {collapsed: true}).addTo(map);
